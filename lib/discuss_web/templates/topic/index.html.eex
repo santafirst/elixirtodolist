@@ -1,0 +1,30 @@
+<h2> Lista di Topics </h2>
+
+<table class="table">
+    <tbody>
+    <%= for topic <- @topics do %>
+
+            <tr>
+                <td><%= topic.title %></td>
+                <td>
+                  <%= link to: Routes.topic_path(@conn, :edit, topic), class: "button" do %>
+                      <i>edit</i>
+                  <% end %>
+                </td>
+                <td>
+                  <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete, class: "button btn btn-danger" do %>
+                      <i>delete</i>
+                  <% end %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+
+
+<div>
+    <%= link to: Routes.topic_path(@conn, :new), class: "button" do %>
+        <i >add</i>
+    <% end %>
+</div>
