@@ -5,17 +5,23 @@
     <%= for topic <- @topics do %>
 
             <tr>
-                <td><%= topic.title %></td>
                 <td>
-                  <%= link to: Routes.topic_path(@conn, :edit, topic), class: "button" do %>
-                      <i>edit</i>
-                  <% end %>
+                <%= link to: Routes.topic_path(@conn, :show, topic) do  %>
+                <h3><%= topic.title %></h3>
+                <% end %>
                 </td>
-                <td>
-                  <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete, class: "button btn btn-danger" do %>
-                      <i>delete</i>
-                  <% end %>
-                </td>
+                <%= if @conn.assigns.user.id == topic.user_id do %>
+                    <td>
+                      <%= link to: Routes.topic_path(@conn, :edit, topic), class: "button" do %>
+                          <i>edit</i>
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= link to: Routes.topic_path(@conn, :delete, topic), method: :delete, class: "button btn btn-danger" do %>
+                          <i>delete</i>
+                      <% end %>
+                    </td>
+                <% end %>
             </tr>
         <% end %>
     </tbody>

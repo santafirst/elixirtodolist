@@ -14,7 +14,7 @@
         <nav role="navigation">
           <ul>
             <%= if @conn.assigns[:user] do %>
-                <li>Ciao </li>
+                <%= link "Logout", class: "button", to: Routes.auth_path(@conn, :signout) %>
             <% else %>
                 <%= link "Accedi con GitHub", class: "button", to: Routes.auth_path(@conn, :request, "github") %>
             <% end %>

@@ -3,6 +3,9 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Repo
   alias DiscussWeb.Topic
 
+  plug DiscussWeb.Plugs.AuthRequested when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:new, :create, :edit, :update, :delete]
+
   def index(conn, _params) do
     IO.puts("    ==========    ")
     IO.inspect(conn)
@@ -17,8 +20,15 @@ defmodule DiscussWeb.TopicController do
     render conn, "new.html", changeset: changeset
   end
 
+  def show(conn, %{"id" => topic_id}) do
+    topic = Repo.get(Topic, topic_id)
+    render conn, "show.html", topic: topic
+  end
+
   def create(conn, %{"topic" => topic}) do
-    changeset = Topic.changeset(%Topic{}, topic)
+    changeset = conn.assigns[:user]
+      |> Ecto.build_assoc(:topics)
+      |> Topic.changeset(topic)
 
     case Repo.insert(changeset) do
       {:ok, post} ->
@@ -66,4 +76,17 @@ defmodule DiscussWeb.TopicController do
     |> redirect(to: Routes.topic_path(conn, :index))
   end
 
+  defp check_topic_owner(conn, _params) do
+    %{params: %{"id" => topic_id}} = conn
+
+    if Repo.get(Topic, topic_id).user_id == conn.assigns.user_id do
+      conn
+    else
+      conn
+      |> put_flash(:info, "Operazione non consentita")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt()
+
+    end
+  end
 end

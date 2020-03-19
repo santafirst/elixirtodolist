@@ -16,6 +16,7 @@
                         'Elixir.DiscussWeb.PageController',
                         'Elixir.DiscussWeb.PageView',
                         'Elixir.DiscussWeb.Plugs.AttachUser',
+                        'Elixir.DiscussWeb.Plugs.AuthRequested',
                         'Elixir.DiscussWeb.Router',
                         'Elixir.DiscussWeb.Router.Helpers',
                         'Elixir.DiscussWeb.Topic',
